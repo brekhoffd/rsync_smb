@@ -10,15 +10,15 @@ SERVER_IP="<server_ip>"            # Вказати IP-адресу віддал
 FOLDER_NAME="<folder_name>"        # Вказати ім'я папки для монтування без <...>
 MOUNT_POINT="/mnt/$FOLDER_NAME"    # Вказати точку монтування
 
-# Список всіх папок для синхронізації та їх розташування у місці призначення
+# Список всіх папок для синхронізації та їх розташування у місці призначення (вказати свої значення)
 declare -A shares=(
         [Folder_1]="/folder/1"
         [Folder_2]="/folder/2"
         [Folder_3]="/folder/3"
 )
 
-# Створення точки монтування SMB-шари
-sudo mkdir /mnt/"$FOLDER_NAME"
+# Створення точки монтування SMB-шари без помилки, якщо така папка вже існує
+sudo mkdir /mnt/"$FOLDER_NAME" 2>/dev/null || true
 
 # Функція для синхронізації даних SMB-шар
 backup_share() {
@@ -26,19 +26,19 @@ backup_share() {
         local target="$2"       # Локальний каталог призначення
         echo "Копіюю $share >>> $target"
 
-        # Звільняємо точку монтування без помилки, якщо нічого не примонтовано
+        # Звільнення точки монтування без помилки, якщо нічого не примонтовано
         sudo umount "$MOUNT_POINT" 2>/dev/null || true
 
-        # Монтуємо SMB-шару
+        # Монтування SMB-шари
         sudo mount -t cifs "//$SERVER_IP/$share" "$MOUNT_POINT" -o guest,iocharset=utf8,ro
 
-        # Створюємо папку призначення
+        # Створення папки призначення
         sudo mkdir -p "$target"
 
-        # Синхронізуємо дані
+        # Синхронізація даних
         sudo rsync -a --progress "$MOUNT_POINT/" "$target"
 
-        # Відмонтовуємо SMB-шару
+        # Відмонтування SMB-шари
         sudo umount "$MOUNT_POINT"
 }
 
