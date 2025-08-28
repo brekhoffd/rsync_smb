@@ -24,7 +24,7 @@ sudo mkdir /mnt/"$FOLDER_NAME" 2>/dev/null || true
 backup_share() {
         local share="$1"        # Назва SMB-шари на сервері
         local target="$2"       # Локальний каталог призначення
-        echo "Копіюю $share >>> $target"
+        echo "Синхронізація $share >>> $target"
 
         # Звільнення точки монтування без помилки, якщо нічого не примонтовано
         sudo umount "$MOUNT_POINT" 2>/dev/null || true
