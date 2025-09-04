@@ -26,7 +26,6 @@ backup_share() {
         local target="$2"  # Локальний каталог призначення
         echo
         echo "Синхронізація $share >>> $target"
-        echo
 
         # Звільнення точки монтування без помилки, якщо нічого не примонтовано
         sudo umount "$MOUNT_POINT" 2>/dev/null || true
@@ -54,4 +53,7 @@ for share in "${!shares[@]}"; do
         backup_share "$share" "${shares[$share]}"
 done
 
+# Вивід кінцевого повідомлення
+echo
 echo "Синхронізація завершена!"
+echo
