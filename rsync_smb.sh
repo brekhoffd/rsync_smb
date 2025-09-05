@@ -6,9 +6,10 @@ IFS=$'\n\t'
 trap 'echo "Сталася помилка на рядку $LINENO"; exit 1' ERR
 
 # Налаштування адреси сервера та точки монтування
-SERVER_IP="<server_ip>"          # Вказати IP-адресу віддаленого SMB-сервера без <...>
-FOLDER_NAME="<folder_name>"      # Вказати ім'я папки для монтування без <...>
-MOUNT_POINT="/mnt/$FOLDER_NAME"  # Вказати точку монтування
+SERVER_IP="<server_ip>"                 # Вказати IP-адресу віддаленого SMB-сервера без <...>
+FOLDER_NAME="<folder_name>"             # Вказати ім'я папки для монтування без <...>
+MOUNT_POINT="/mnt/$FOLDER_NAME"         # Вказати точку монтування
+LOG_FILE="/home/<user_name>/rsync.log"  # Вказати ім'я користувача без <...>
 
 # Список всіх папок для синхронізації та їх розташування у місці призначення (вказати свої значення)
 declare -A shares=(
@@ -53,7 +54,13 @@ for share in "${!shares[@]}"; do
         backup_share "$share" "${shares[$share]}"
 done
 
-# Вивід кінцевого повідомлення
-echo
-echo "Синхронізація завершена!"
-echo
+# Вивід результату синхронізації
+if [ $? -eq 0 ]; then
+    echo
+    echo "$(date '+%F %T') - Синхронізація завершена!" >> "$LOG_FILE"
+    echo
+else
+    echo
+    echo "$(date '+%F %T') - Помилка синхронізації!" >> "$LOG_FILE"
+    echo
+fi
