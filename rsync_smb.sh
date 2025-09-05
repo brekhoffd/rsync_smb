@@ -57,10 +57,10 @@ done
 # Вивід результату синхронізації
 if [ $? -eq 0 ]; then
     echo
-    echo "$(date '+%F %T') - Синхронізація завершена!" >> "$LOG_FILE"
+    echo "$(date '+%F %T') - Синхронізація завершена!" | tee -a "$LOG_FILE"
     echo
 else
     echo
-    echo "$(date '+%F %T') - Помилка синхронізації!" >> "$LOG_FILE"
+    echo "$(date '+%F %T') - Помилка синхронізації!" | tee -a "$LOG_FILE"
     echo
 fi
