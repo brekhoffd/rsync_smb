@@ -43,7 +43,7 @@ backup_share() {
         # Видалення виключень ключем --delete-excluded                      #
         # Відпрацювання скрипта без внесення змін --dry-run                 #
         #####################################################################
-        sudo rsync -a --progress --delete-during "$MOUNT_POINT/" "$target"
+        sudo rsync -a --info=progress2 --chown=nobody:nogroup --chmod=777 --delete-during "$MOUNT_POINT/" "$target"
 
         # Відмонтування SMB-шари
         sudo umount "$MOUNT_POINT"
