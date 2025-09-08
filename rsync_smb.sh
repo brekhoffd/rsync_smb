@@ -54,13 +54,7 @@ for share in "${!shares[@]}"; do
         backup_share "$share" "${shares[$share]}"
 done
 
-# Вивід результату синхронізації та запис у файл
-if [ $? -eq 0 ]; then
-    echo
-    echo "Синхронізація завершена!" && "$(date '+%F %T') - Успішно!" >> "$LOG_FILE"
-    echo
-else
-    echo
-    echo "Помилка синхронізації!" && "$(date '+%F %T') - Невдало!" >> "$LOG_FILE"
-    echo
-fi
+# Вивід кінцевого повідомлення та запис результату у файл
+echo
+echo "$(date '+%F %T') - Синхронізація завершена!" | tee -a "$LOG_FILE"
+echo
