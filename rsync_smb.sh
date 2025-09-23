@@ -32,7 +32,7 @@ backup_share() {
         sudo umount "$MOUNT_POINT" 2>/dev/null || true
 
         # Монтування SMB-шари
-        sudo mount -t cifs "//$SERVER_IP/$share" "$MOUNT_POINT" -o guest,iocharset=utf8,ro
+        sudo mount -t cifs "//$SERVER_IP/$share" "$MOUNT_POINT" -o guest,iocharset=utf8,ro  # Замість guest можна вказати логін та пароль користувача у форматі: username=<логін>,password=<пароль>
 
         # Створення папки призначення
         sudo mkdir -p "$target"
